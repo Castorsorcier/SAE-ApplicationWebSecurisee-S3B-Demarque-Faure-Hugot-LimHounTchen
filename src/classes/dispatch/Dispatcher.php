@@ -8,6 +8,7 @@ use iutnc\deefy\action\AddUserAction;
 use iutnc\deefy\action\SigninAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\Logout;
+use iutnc\deefy\action\Profil;
 
 class Dispatcher{
   protected ?string $action=null;
@@ -31,6 +32,11 @@ class Dispatcher{
 
         case 'connexion':
           $execution=new SigninAction();
+          $html=$execution->execute();
+          break;
+
+        case 'profil':
+          $execution=new Profil();
           $html=$execution->execute();
           break;
 
@@ -60,7 +66,7 @@ class Dispatcher{
 
     else
       $options=<<<end
-
+      <li><a href="?action=profil">Profil</a></li>
       <li><a href="?action=logout">Se déconnecter</a></li>
       end;
 
@@ -75,7 +81,7 @@ class Dispatcher{
       <body>
         <h1>NetVOD</h1>
         <nav><ul>
-          <li><a href="index.php">Acceuil</a></li>
+          <li><a href="index.php">Accueil</a></li>
           $options
       </nav><br>
       $html

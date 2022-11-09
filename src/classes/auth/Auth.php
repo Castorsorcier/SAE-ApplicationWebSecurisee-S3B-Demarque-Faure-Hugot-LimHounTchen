@@ -67,4 +67,23 @@ class Auth{
     static function checkPasswordStrength(string $pass, int $minimumLength):bool{
       return strlen($pass)>$minimumLength;
     }
+
+    static function showProfil(){
+      $query="select * from utilisateur";
+      $db=ConnectionFactory::makeConnection();
+      $stmt=$db->query($query);
+      $stmt->execute();
+      $res=$stmt->fetch();
+
+      $_SESSION['nom']=$res['nom'];
+      $_SESSION['prenom']=$res['prenom'];
+      $_SESSION['numCarte']=$res['numCarte'];
+    }
+
+    static function setProfil(string $nom, string $prenom, string $numCarte){
+      $query="update utilisateur set nom=?, prenom=?, numCarte=? where email=?";
+      $db=ConnectionFactory::makeConnection();
+      $stmt=$db->prepare($query);
+      $res=$stmt->execute([$nom, $prenom, $numCarte, $_SESSION['id']]);
+    }
 }
