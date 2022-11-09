@@ -14,6 +14,7 @@
       self::setConfig();
 			$dsn=self::$conn['driver'].':host='.self::$conn['host'].'; dbname='.self::$conn['database'];
 			$pdo = new PDO($dsn,self::$conn['username'],self::$conn['password']);
+			$pdo->query("SET NAMES UTF8");
 			return $pdo;
 
 		}

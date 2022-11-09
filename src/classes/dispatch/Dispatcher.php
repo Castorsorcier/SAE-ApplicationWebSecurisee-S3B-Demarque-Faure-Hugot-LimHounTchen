@@ -47,7 +47,7 @@ class Dispatcher{
           break;
 
         default:
-          $html ='<h2>Bienvenue</h2>Sur NetVOD, retrouvez tous vos épisodes préférés en toute sécurité';
+          $html ='<h2>Bienvenue</h2>';
           if(isset($_SESSION['utilisateur'])){
             $execution=new Display();
             $html.=$execution->execute();
