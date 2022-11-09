@@ -9,6 +9,7 @@ use iutnc\deefy\action\SigninAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\Logout;
 use iutnc\deefy\action\Profil;
+use iutnc\deefy\action\Display;
 
 class Dispatcher{
   protected ?string $action=null;
@@ -47,6 +48,10 @@ class Dispatcher{
 
         default:
           $html ='<h2>Bienvenue</h2>';
+          if(isset($_SESSION['utilisateur'])){
+            $execution=new Display();
+            $html.=$execution->execute();
+          }
           break;
       }
       echo $this->renderPage($html);
