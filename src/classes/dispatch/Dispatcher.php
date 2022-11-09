@@ -46,7 +46,7 @@ class Dispatcher{
           break;
 
         default:
-          $html ='<h2>Bienvenue</h2>';
+          $html ='<h2>Bienvenue</h2>Sur NetVOD, retrouvez tous vos épisodes préférés en toute sécurité';
           break;
       }
       echo $this->renderPage($html);
@@ -55,7 +55,7 @@ class Dispatcher{
   public function renderPage(string $html):string{
     if(!isset($_SESSION['utilisateur'])){
       $options=<<<END
-      <li><a href="?action=register">Inscription</a></li>
+      <li><a href="?action=register">S'incrire</a></li>
       <li><a href="?action=connexion">Se connecter</a></li>
       END;
     }
@@ -64,11 +64,14 @@ class Dispatcher{
     Rajouter les liens des actions ci-dessous
     */
 
-    else
+    else{
+      $email=$_SESSION['email'];
       $options=<<<end
       <li><a href="?action=profil">Profil</a></li>
       <li><a href="?action=logout">Se déconnecter</a></li>
+      </nav>Vous êtes connecté : <strong>$email</strong><br>
       end;
+    }
 
     return <<<END
     <!DOCTYPE html>
