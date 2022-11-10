@@ -31,9 +31,21 @@ class AddUserAction extends Action{
     }
     else{
       $email=filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+      $_SESSION['email']=$email;
       $passwd=filter_var($_POST['passwd'], FILTER_SANITIZE_STRING);
-      $bool=Auth::register($_POST['email'], $_POST['passwd']);
-      $html.="Inscription réussie";
+      $html.="Cliquez sur le lien de confirmation envoyé sur le mail fourni";
+      $token=bin2hex(random_bytes(64));
+
+      if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+         $url = "https://";
+      else
+         $url = "http://";
+      $url.= $_SERVER['HTTP_HOST'];
+      $url.= $_SERVER['REQUEST_URI'];
+      $url=substr($url, 0, strpos($url, "?"));
+      $url.="?token=";
+      $html.="<br><a href=\"$url$token\">$url$token</a>";
+      Auth::createToken($email, $passwd, $token);
     }
     return $html;
   }

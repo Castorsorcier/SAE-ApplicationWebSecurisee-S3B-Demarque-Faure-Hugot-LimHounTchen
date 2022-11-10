@@ -14,15 +14,18 @@ use iutnc\deefy\action\addseriepref;
 use iutnc\deefy\action\suppseriepref;
 use iutnc\deefy\action\DejaVue;
 use iutnc\deefy\action\EnCours;
+use iutnc\deefy\action\Token;
 
 use iutnc\deefy\test\PageEpisode;
 use iutnc\deefy\test\AfficherSerie;
 
 class Dispatcher{
   protected ?string $action=null;
+  protected ?string $token=null;
 
   public function __construct(){
     $this->action=isset($_GET['action'])?$_GET['action']:null;
+    $this->token=isset($_GET['token'])?$_GET['token']:null;
   }
 
   public function run(){
@@ -89,6 +92,12 @@ class Dispatcher{
           }
             }
           break;
+      }
+
+      if(!is_null($this->token)){
+        $execution=new Token();
+        $html.=$execution->execute();
+        $this->token=null;
       }
 
       echo $this->renderPage($html);
