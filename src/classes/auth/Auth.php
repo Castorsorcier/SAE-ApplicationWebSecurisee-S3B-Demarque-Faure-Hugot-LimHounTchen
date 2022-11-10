@@ -25,37 +25,34 @@ class Auth{
     /**
     *Permet d'ajouter un nouvel utilisateur dans la bd en verifiant
     *la force de son mot de passe et le nouvel email
-    *le mot de passe est encode dans la bd
     *$email:email utilisateur
-    *$pass:mot de passe en clair
+    *$pass:mot de passe chiffre
     */
-    static function register(string $email, string $pass):bool{
-
-      $hash=password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
-
-      try{
+    static function register(string $email):bool{
       $db=ConnectionFactory::makeConnection();
-      }
-      catch(Exception $e){}
-
-      $query_email="select email from utilisateur where email=?";
-      $stmt=$db->prepare($query_email);
-      $res=$stmt->execute([$email]);
-      if($stmt->fetch())
-        throw new Exception("ce compte existe déjà");
-
-      self::checkPasswordStrength($pass, 10);
+      $query="select * from token where email=?";
+      $stmt=$db->prepare($query);
+      $stmt->execute([$email]);
+      $res=$stmt->fetch();
+      if(!$res) throw new Exception('Token inexistant');
 
       try{
         $query="insert into utilisateur values(?,?, null, null, null, null, null, null, null)";
 
         $stmt=$db->prepare($query);
-        $res=$stmt->execute([$email, $hash]);
+        $stmt->execute([$email, $res['passwd']]);
       }
       catch(Exception $e){
         throw new Exception("erreur de creation de compte");
       }
       $_SESSION['numCarte']=null;
+
+      $query="delete from token where email=?";
+      $stmt=$db->prepare($query);
+      $res=$stmt->execute([$_SESSION['email']]);
+      if(!$res)
+        throw new Exception("erreur token");
+
       return true;
     }
 
@@ -145,10 +142,50 @@ class Auth{
     *$numCarte:numero de carte en clair
     */
     static function setProfil(string $nom, string $prenom, string $genrePref, string $numCarte){
-      $query="update utilisateur set nom=?, prenom=?, genrePref=?, numCarte=? where email=?";
       $db=ConnectionFactory::makeConnection();
+      $query="update utilisateur set nom=?, prenom=?, genrePref=?, numCarte=? where email=?";
       $stmt=$db->prepare($query);
       $hash=$numCarte!==""?openssl_encrypt($numCarte, "AES-128-ECB", static::$keyPasswd):"";
       $res=$stmt->execute([$nom, $prenom, $genrePref, $hash, $_SESSION['email']]);
+    }
+
+    static function createToken(string $email, string $passwd, string $token){
+      $db=ConnectionFactory::makeConnection();
+
+      $query_email="select email from utilisateur where email=?";
+      $stmt=$db->prepare($query_email);
+      $res=$stmt->execute([$email]);
+      if($stmt->fetch())
+        throw new Exception("ce compte existe déjà");
+
+      $query="select count(id)+1 from token";
+      $stmt=$db->query($query);
+      $cpt=$stmt->fetch()[0];
+
+      $hash=password_hash($passwd, PASSWORD_DEFAULT, ['cost'=>12]);
+      self::checkPasswordStrength($passwd, 10);
+
+      $query="insert into token values(?, ?, ?, null, ?, ?, ?, ?)";
+      $stmt=$db->prepare($query);
+      $res=$stmt->execute([$cpt, $email, $hash, $token, date('Y-m-d H:i:s', time()+60*60), $token, date('Y-m-d H:i:s', time()+60*15)]);
+      //stockage du mot de passe crypte
+      $_SESSION['passwd']=$hash;
+    }
+
+    static function checkToken(string $token):bool{
+      $db=ConnectionFactory::makeConnection();
+      $query="select * from token
+where renew_token = ?
+and renew_expires > CURRENT_TIMESTAMP;";
+      $stmt=$db->prepare($query);
+      $stmt->execute([$token]);
+      $res=$stmt->fetch();
+      if(!$res)
+        throw new Exception("token non trouvé");
+
+      /*$query="update token set active = 1, renew_token=null
+      where renew_token = ?";
+      */
+      return true;
     }
 }
