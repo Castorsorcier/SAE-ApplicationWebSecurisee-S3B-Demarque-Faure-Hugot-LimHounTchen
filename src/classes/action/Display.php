@@ -29,14 +29,14 @@ class Display extends Action {
 		if($lv>=1){
 			$html .= "<div><div><h2>Series Favorites : </h2>";
 			while($data2=$fav->fetch()){
-				$html.= "<div name=\"serie\"><li><a href=\"?action=".$data2['id']."\">".$data2['titre']."</a></li>".$data2['descriptif']."<br>Sortie en ".$data2['annee']."<a href=\"?action=suppseriepref&id=".$data2['id']."\">Supprimer des favories</a></div>";
+				$html.= "<div name=\"serie\"><li><a href=\"?action=".$data2['id']."\">".$data2['titre']."</a></li>".$data2['descriptif']."<br>Sortie en ".$data2['annee']."<a href=\"?action=suppseriepref&id=".$data2['id']."\"> Supprimer des favoris</a></div>";
 			}
 		}
 		$series->execute();
 		$html .= '</div><br><br><div> <h2>Catalogue des series : </h2>';
 		while($data=$series->fetch()){
             //$text=ClickSerie::createSerie($data['id'],$data['titre']);
-			$html.= "<div name=\"serie\"><li><a href=\"?action=".$data['id']."\">".$data['titre']."</a></li>".$data['descriptif']."<br>Sortie en ".$data['annee']."<a href=\"?action=addseriepref&id=".$data['id']."\">Ajouter aux favories</a></div><br>";
+			$html.= "<div name=\"serie\"><li><a href=\"?action=".$data['id']."\">".$data['titre']."</a></li>".$data['descriptif']."<br>Sortie en ".$data['annee']."<a href=\"?action=addseriepref&id=".$data['id']."\"> Ajouter aux favoris</a></div><br>";
 		}
 		$html .= "</div>";
 		return $html;

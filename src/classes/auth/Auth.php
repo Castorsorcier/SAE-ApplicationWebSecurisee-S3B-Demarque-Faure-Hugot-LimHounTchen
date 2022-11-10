@@ -4,7 +4,6 @@ namespace iutnc\deefy\auth;
 use iutnc\deefy\factory\ConnectionFactory;
 require_once 'vendor/autoload.php';
 use Exception;
-use PDO;
 
 class Auth{
 
