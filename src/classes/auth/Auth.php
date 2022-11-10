@@ -135,24 +135,6 @@ class Auth{
       return $utilisateur['email'];
     }
 
-    static function checkPasswordStrength(string $pass, int $minimumLength):bool{
-      return strlen($pass)<$minimumLength;
-    }
-
-    static function showProfil(){
-      $query="select * from utilisateur";
-      $db=ConnectionFactory::makeConnection();
-      $stmt=$db->query($query);
-      $stmt->execute();
-      $res=$stmt->fetch();
-
-      $_SESSION['nom']=$res['nom'];
-      $_SESSION['prenom']=$res['prenom'];
-      $_SESSION['genrePref']=$res['genrePref'];
-      //numero de carte encode
-      $_SESSION['numCarte']=$res['numCarte'];
-    }
-
     /**
     *Permet de modifier le profil utilisateur dans la bd et de chiffrer le numero de carte
     *$nom:nom de compte
