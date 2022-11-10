@@ -33,11 +33,12 @@ class Auth{
         throw new Exception("compte existant");
 
       try{
-        $query="insert into utilisateur values(?,?, null, null, null, null, null, null)";
+        $query="insert into utilisateur values(?,?, null, null, null)";
         $stmt=$db->prepare($query);
         $res=$stmt->execute([$email, $hash]);
       }
       catch(Exception $e){
+        echo $e->getMessage();
         throw new Exception("erreur de creation de compte");
       }
       return true;
@@ -65,7 +66,7 @@ class Auth{
     }
 
     static function checkPasswordStrength(string $pass, int $minimumLength):bool{
-      return strlen($pass)>$minimumLength;
+      return strlen($pass)<$minimumLength;
     }
 
     static function showProfil(){
