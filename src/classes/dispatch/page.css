@@ -1,0 +1,29 @@
+label,p,h1,li,h2,div,body {
+    color: white;
+}
+
+label,a,li,p,div,body{
+    font-size:25px;
+}
+
+h1,h2 {
+    font-size:50px;
+}
+
+a {
+    color: #000e59;
+}
+
+h1{
+    text-underline-color: white;
+    text-decoration: underline;
+}
+
+strong {
+    color : #00ffff;
+}
+
+body {
+    background: rgb(51,62,255);
+    background: linear-gradient(0deg, rgba(51,62,255,1) 0%, rgba(34,193,195,1) 30%, rgba(151,169,227,1) 70%, rgba(51,62,255,1) 100%);
+}

@@ -132,7 +132,8 @@ class Dispatcher{
       <head>
         <title>NetVOD</title>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1 /"
+        <meta name="viewport" content="width=device-width, initial-scale=1 /">
+        <link rel="stylesheet" href="src/classes/dispatch/page.css" />
       </head>
       <body>
         <h1>NetVOD</h1>
