@@ -44,4 +44,5 @@ class PageEpisode{
       $html.=commentaire::sectionCommentaire($id);
       return "$html";
   }
+
 }
