@@ -1,17 +1,17 @@
 <?php
 
 namespace iutnc\deefy\test;
-require_once 'pageEpisode.php';
+require_once 'PageEpisode.php';
 
-class clickSerie{
-function runFunction(int $id){
-    afficherSerie($id);
-}
+class ClickSerie{
+  static function runFunction(int $id){
+      afficherSerie($id);
+  }
 
-function createSerie(int $id,string $titre): string{
-    $text="<a href=\"?function&id=".$id."\">$titre</a>";
-    return $text;
-}
+  static function createSerie(int $id,string $titre): string{
+      $text="<a href=\"?function&id=".$id."\">$titre</a>";
+      return $text;
+  }
 }
 
 if (isset($_GET['function'])){
