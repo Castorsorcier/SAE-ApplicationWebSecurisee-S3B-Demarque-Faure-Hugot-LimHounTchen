@@ -1,0 +1,69 @@
+#comm
+{
+    height:150px;
+    width: 500px;
+    font-size:14pt;
+    text-align: left;
+    vertical-align: top;
+}
+
+label,p,h1
+{
+    color: white;
+}
+
+h1{
+    text-underline-color: white;
+    text-decoration: underline;
+}
+
+body
+{
+    background-color: red;
+}
+
+#boite
+{
+    border: none;
+    border-radius: 2pt;
+    background-color: white;
+    box-shadow: 0 0 0 2pt black;
+    color: black;
+}
+
+#auteur{
+    border: none;
+    border-radius: 2pt;
+    background-color: white;
+    box-shadow: 0 0 0 2pt black;
+    color: black;
+    font-size:15pt;
+}
+
+#noter{
+    border: none;
+    border-radius: 2pt;
+    background-color: white;
+    box-shadow: 0 0 0 2pt black;
+    color: black;
+    font-size:20pt;
+}
+
+#note{
+    height:40px;
+    width: 40px;
+    font-size:10pt;
+}
+
+textarea{
+    resize: none;
+}
+
+video{
+    border: none;
+    border-radius: 10pt;
+}
+
+#ranger{
+    text-align: left;
+}
