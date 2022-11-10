@@ -5,8 +5,9 @@
     font-size:14pt;
     text-align: left;
     vertical-align: top;
+    resize: none;
 }
-
+/*
 label,p,h1
 {
     color: white;
@@ -21,6 +22,7 @@ body
 {
     background-color: red;
 }
+*/
 
 #boite
 {
@@ -53,10 +55,6 @@ body
     height:40px;
     width: 40px;
     font-size:10pt;
-}
-
-textarea{
-    resize: none;
 }
 
 video{

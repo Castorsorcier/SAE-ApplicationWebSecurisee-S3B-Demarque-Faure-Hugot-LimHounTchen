@@ -15,6 +15,7 @@ use iutnc\deefy\action\suppseriepref;
 use iutnc\deefy\action\DejaVue;
 use iutnc\deefy\action\EnCours;
 
+use iutnc\deefy\test\PageEpisode;
 use iutnc\deefy\test\AfficherSerie;
 
 class Dispatcher{
@@ -75,14 +76,18 @@ class Dispatcher{
           break;
 
         default:
-          $html='<h2>Bienvenue</h2>';
+            $html="";
+            if(!isset($_GET['function'])){
+          $html.='<h2>Bienvenue</h2>';
           if(!is_null($this->action)){
+              //$html.="<p>HOME</p>";
             $html.=AfficherSerie::afficherSerie($this->action);
           }
           else if(isset($_SESSION['utilisateur'])){
             $execution=new Display();
             $html.=$execution->execute();
           }
+            }
           break;
       }
 
@@ -110,6 +115,14 @@ class Dispatcher{
       <li><a href="?action=logout">Se déconnecter</a></li>
       </nav>Vous êtes connecté : <strong>$email</strong><br>
       end;
+
+        if (isset($_GET['function']))
+            if(isset($_GET['id'])) {
+                $options .= AfficherSerie::afficherSerie($_GET['id']);
+            }
+            else if (isset($_GET['episode'])) {
+                $options .= PageEpisode::afficherEpisode($_GET['episode']);
+            }
 
     }
 

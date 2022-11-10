@@ -5,22 +5,26 @@ use iutnc\deefy\factory\ConnectionFactory;
 require_once 'Commentaire.php';
 
 class PageEpisode{
-  static function afficherEpisode($id){
+  static function afficherEpisode($id):string{
       $bdd=ConnectionFactory::makeConnection();
       $result = $bdd->query("select numero,titre,resume,duree,file from episode where id=$id");
-      $data = $result->fetch(PDO::FETCH_ASSOC);
+      $data = $result->fetch();
+      /*
       $html="
   <head>
       <link rel=\"stylesheet\" href=\"page.css\" type=\"text/css\">
   </head>
   <body>";
-      $html.="<center><h1>".$data['numero']." ) ".$data['titre']."</h1>";
+      */
+      $html="";
+      $html.="<center><h1 style=\"text-decoration: underline;\">".$data['numero']." ) ".$data['titre']."</h1>";
       $html.="<p>".$data['resume']."<p>";
       $html.="<p> durée de l'épisode : ".$data['duree']."s.<p>";
-      $html.="<video src=\"video/".$data['file']."\"
-                  type=\"video/mp4\" controls=\"\" poster=\"\">
+      $html.="<video src=\"src/classes/test/video/".$data['file']."\"
+                  type=\"video/mp4\" controls=\"\" poster=\"\" style=\"border: none;
+    border-radius: 10pt;\">
                   </video>";
-      $html.=sectionCommentaire($id);
-      print ($html);
+      $html.=commentaire::sectionCommentaire($id);
+      return "$html";
   }
 }

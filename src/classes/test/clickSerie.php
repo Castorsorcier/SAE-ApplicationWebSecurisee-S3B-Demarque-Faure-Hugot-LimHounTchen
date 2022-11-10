@@ -14,6 +14,8 @@ class ClickSerie{
   }
 }
 
+/*
 if (isset($_GET['function'])){
     runFunction($_GET['id']);
 }
+*/
