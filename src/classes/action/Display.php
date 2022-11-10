@@ -1,13 +1,15 @@
 <?php
 
-
 namespace iutnc\deefy\action;
+
+use iutnc\deefy\test\clickSerie;
 use iutnc\deefy\action\Action;
 use iutnc\deefy\factory\ConnectionFactory as ConnectionFactory;
 class Display extends Action {
 	public function execute(): string{
 		$html = "";
 		$db = ConnectionFactory::makeConnection();
+
 		$series = $db->prepare("SELECT id, titre, descriptif, annee 
 						FROM serie
 						WHERE id NOT IN (SELECT id FROM liste2utilisateur WHERE idListe = 1)");
@@ -34,7 +36,6 @@ class Display extends Action {
 		while($data=$series->fetch()){
 			$html.= "<div name=\"serie\">".$data['titre']." : ".$data['descriptif']."<br>Sortie en ".$data['annee']."<a href=\"?action=addseriepref&id=".$data['id']."\">Ajouter aux favories</a>
 			</div>";
-
 		}
 		$html .= "</div>";
 		return $html;

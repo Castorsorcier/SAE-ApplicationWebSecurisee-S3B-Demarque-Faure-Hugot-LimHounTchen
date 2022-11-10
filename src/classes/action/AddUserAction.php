@@ -30,9 +30,9 @@ class AddUserAction extends Action{
       END;
     }
     else{
-      $bool=Auth::register($_POST['email'], $_POST['passwd']);
       $email=filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
       $passwd=filter_var($_POST['passwd'], FILTER_SANITIZE_STRING);
+      $bool=Auth::register($_POST['email'], $_POST['passwd']);
       $html.="Inscription réussie";
     }
     return $html;
