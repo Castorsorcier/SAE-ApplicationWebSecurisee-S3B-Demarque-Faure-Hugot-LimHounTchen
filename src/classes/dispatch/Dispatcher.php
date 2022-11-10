@@ -11,6 +11,8 @@ use iutnc\deefy\action\Logout;
 use iutnc\deefy\action\Profil;
 use iutnc\deefy\action\Display;
 
+use iutnc\deefy\test\AfficherSerie;
+
 class Dispatcher{
   protected ?string $action=null;
 
@@ -76,6 +78,9 @@ class Dispatcher{
       <li><a href="?action=logout">Se déconnecter</a></li>
       </nav>Vous êtes connecté : <strong>$email</strong><br>
       end;
+
+      if(!isset($_GET['function']))
+        $options.=AfficherSerie::afficherSerie(1);
     }
 
     return <<<END
