@@ -73,7 +73,7 @@ class Dispatcher{
           $execution=new EnCours();
           $html=$execution->execute();
           break;
-          
+
         default:
           $html='<h2>Bienvenue</h2>';
           if(!is_null($this->action)){
@@ -105,7 +105,7 @@ class Dispatcher{
       $email=$_SESSION['email'];
       $options=<<<end
       <li><a href="?action=profil">Profil</a></li>
-      <li><a href="?action=dejavue">Series déja vue</a></li>
+      <li><a href="?action=dejavue">Series déjà vues</a></li>
       <li><a href="?action=encours">Series en cours de visionnage</a></li>
       <li><a href="?action=logout">Se déconnecter</a></li>
       </nav>Vous êtes connecté : <strong>$email</strong><br>

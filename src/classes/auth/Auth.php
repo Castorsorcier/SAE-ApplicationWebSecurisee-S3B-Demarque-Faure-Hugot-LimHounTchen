@@ -118,21 +118,25 @@ class Auth{
     /**
     *Stocke les informations du profil utilisateur dans des variables de session
     */
-    static function showProfil(){
+    static function loadProfil(){
       $query="select * from utilisateur where email=?";
       $db=ConnectionFactory::makeConnection();
 
       $stmt=$db->prepare($query);
-      $res=$stmt->execute([$email]);
-      if(!$res) throw new Error('auth error');
+      $utilisateur=$stmt->execute([$_SESSION['email']]);
+      if(!$utilisateur) throw new Error('auth error');
 
-      $utilisateur=$stmt->fetch(PDO::FETCH_ASSOC);
+      $utilisateur=$stmt->fetch();
 
       if(!$utilisateur) throw new Exception("auth failed");
-      if(!password_verify($mdp, $utilisateur['passwd']))
-        throw new Exception('Mot de passe incorrect');
+
       $_SESSION['utilisateur']=serialize($utilisateur);
-      return $utilisateur['email'];
+
+      $_SESSION['nom']=$utilisateur['nom'];
+      $_SESSION['prenom']=$utilisateur['prenom'];
+      $_SESSION['genrePref']=$utilisateur['genrePref'];
+      //numero de carte encode
+      $_SESSION['numCarte']=$utilisateur['numCarte'];
     }
 
     /**

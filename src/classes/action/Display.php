@@ -8,7 +8,7 @@ use iutnc\deefy\factory\ConnectionFactory as ConnectionFactory;
 ConnectionFactory::setConfig('config.ini');
 class Display extends Action {
 	public function execute(): string{
-
+		$html=null;
 		$db = ConnectionFactory::makeConnection();
 
 		$series = $db->prepare("SELECT id, titre, descriptif, annee
