@@ -33,14 +33,13 @@ class Auth{
     static function register(string $email, string $pass):bool{
 
       $hash=password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
-      try{
-        $db=ConnectionFactory::makeConnection();
-      }
-      catch(Exception $e){
-        throw new Exception($e);
-      }
 
-      $query_email="select * from utilisateur where email=?";
+      try{
+      $db=ConnectionFactory::makeConnection();
+      }
+      catch(Exception $e){}
+
+      $query_email="select email from utilisateur where email=?";
       $stmt=$db->prepare($query_email);
       $res=$stmt->execute([$email]);
       if($stmt->fetch())
@@ -49,7 +48,7 @@ class Auth{
       self::checkPasswordStrength($pass, 10);
 
       try{
-        $query="insert into utilisateur values(?,?, null, null, null, null, null, null)";
+        $query="insert into utilisateur values(?,?, null, null, null, null, null, null, null)";
         $stmt=$db->prepare($query);
         $res=$stmt->execute([$email, $hash]);
       }
@@ -70,20 +69,19 @@ class Auth{
     *return:email de l'utilisateur
     */
     static function authentificate(string $email, string $mdp):string{
-      $query="select * from utilisateur where email=?";
       $db=ConnectionFactory::makeConnection();
 
+      //test existence de l'utilisateur
+      $query="select * from utilisateur where email=?";
       $stmt=$db->prepare($query);
-      $res=$stmt->execute([$email]);
-      if(!$res) throw new Error('auth error');
+      $stmt->execute([$email]);
+      $res=$stmt->fetch();
+      if(!$res) throw new Exception('Compte inexistant');
 
-      $utilisateur=$stmt->fetch(PDO::FETCH_ASSOC);
-
-      if(!$utilisateur) throw new Exception("auth failed");
-      if(!password_verify($mdp, $utilisateur['passwd']))
+      if(!password_verify($mdp, $res['passwd']))
         throw new Exception('Mot de passe incorrect');
-      $_SESSION['utilisateur']=serialize($utilisateur);
-      return $utilisateur['email'];
+      $_SESSION['utilisateur']=serialize($res);
+      return $res['email'];
     }
 
     /**
@@ -129,6 +127,7 @@ class Auth{
 
       $_SESSION['nom']=$res['nom'];
       $_SESSION['prenom']=$res['prenom'];
+      $_SESSION['genrePref']=$res['genrePref'];
       //numero de carte encode
       $_SESSION['numCarte']=$res['numCarte'];
     }
@@ -139,12 +138,11 @@ class Auth{
     *$prenom:prenom de compte
     *$numCarte:numero de carte en clair
     */
-    static function setProfil(string $nom, string $prenom, string $numCarte){
-      $query="update utilisateur set nom=?, prenom=?, numCarte=? where email=?";
+    static function setProfil(string $nom, string $prenom, string $genrePref, string $numCarte){
+      $query="update utilisateur set nom=?, prenom=?, genrePref=?, numCarte=? where email=?";
       $db=ConnectionFactory::makeConnection();
       $stmt=$db->prepare($query);
-      $_SESSION['numCarte']=$numCarte;
-      $hash=openssl_encrypt($numCarte, "AES-128-ECB", static::$keyPasswd);
-      $res=$stmt->execute([$nom, $prenom, $hash, $_SESSION['email']]);
+      $hash=$numCarte!==""?openssl_encrypt($numCarte, "AES-128-ECB", static::$keyPasswd):"";
+      $res=$stmt->execute([$nom, $prenom, $genrePref, $hash, $_SESSION['email']]);
     }
 }
