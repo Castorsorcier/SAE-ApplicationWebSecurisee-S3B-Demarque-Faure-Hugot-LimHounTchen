@@ -15,7 +15,7 @@
 			$dv->execute();
 			$html .= "<div><h2>Series en cours : </h2>";
 			while($data=$dv->fetch()){
-				$html.= "<div name=\"serie\">".$data['titre']." : ".$data['descriptif']."<br>Sortie en ".$data['annee']."</div>";
+				$html.= "<div name=\"serie\"><li><a href=\"?action=".$data['id']."\">".$data['titre']."</a></li>".$data['descriptif']."<br>Sortie en ".$data['annee'];
 			}
 			$html.="</div>";
 			return $html;
