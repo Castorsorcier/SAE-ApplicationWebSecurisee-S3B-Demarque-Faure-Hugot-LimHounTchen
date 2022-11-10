@@ -12,6 +12,8 @@ use iutnc\deefy\action\Profil;
 use iutnc\deefy\action\Display;
 use iutnc\deefy\action\addseriepref;
 use iutnc\deefy\action\suppseriepref;
+use iutnc\deefy\action\DejaVue;
+use iutnc\deefy\action\EnCours;
 
 use iutnc\deefy\test\AfficherSerie;
 
@@ -62,6 +64,16 @@ class Dispatcher{
           header('Location: index.php');
           break;
 
+        case 'dejavue':
+          $execution=new DejaVue();
+          $html=$execution->execute();
+          break;
+
+        case 'encours':
+          $execution=new EnCours();
+          $html=$execution->execute();
+          break;
+          
         default:
           $html ='<h2>Bienvenue</h2>';
           if(isset($_SESSION['utilisateur'])){
@@ -89,6 +101,8 @@ class Dispatcher{
       $email=$_SESSION['email'];
       $options=<<<end
       <li><a href="?action=profil">Profil</a></li>
+      <li><a href="?action=dejavue">Series déja vue</a></li>
+      <li><a href="?action=encours">Series en cours de visionnage</a></li>
       <li><a href="?action=logout">Se déconnecter</a></li>
       </nav>Vous êtes connecté : <strong>$email</strong><br>
       end;
