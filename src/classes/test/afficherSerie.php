@@ -8,10 +8,10 @@ class afficherSerie{
 
 static function AfficherSerie($liste):string{
   $bdd=ConnectionFactory::makeConnection();
-  $resultat = $bdd->query("select titre,descriptif,annee,date_ajout from serie where id=$liste");
+  $resultat = $bdd->query("select titre,descriptif,annee,date_ajout,note from serie where id=$liste");
   $result = $bdd->query("select numero,titre,resume,duree,id from episode where serie_id=$liste");
   $data2 = $resultat->fetch();
-  $html="<u><center><h1>".$data2['titre']." fait en ".$data2['annee']."</h1></u>";
+  $html="<u><center><h1>".$data2['titre']." fait en ".$data2['annee']." et noté : ".$data2['note']." sur 5."."</h1></u>";
   $html.="<h2>".$data2['descriptif']."</h2>";
   $html.="<ul></center>";
   while($data = $result->fetch()){
