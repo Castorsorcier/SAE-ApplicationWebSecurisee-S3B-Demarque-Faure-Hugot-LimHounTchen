@@ -48,7 +48,7 @@ class Auth{
       self::checkPasswordStrength($pass, 10);
 
       try{
-        $query="insert into utilisateur values(?,?, null, null, null)";
+        $query="insert into utilisateur values(?,?, null, null, null, null, null, null, null)";
 
         $stmt=$db->prepare($query);
         $res=$stmt->execute([$email, $hash]);
