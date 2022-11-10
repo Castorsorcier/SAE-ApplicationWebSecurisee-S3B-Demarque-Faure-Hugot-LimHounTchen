@@ -10,6 +10,8 @@ use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\Logout;
 use iutnc\deefy\action\Profil;
 use iutnc\deefy\action\Display;
+use iutnc\deefy\action\addseriepref;
+use iutnc\deefy\action\suppseriepref;
 
 use iutnc\deefy\test\AfficherSerie;
 
@@ -46,6 +48,18 @@ class Dispatcher{
         case 'logout':
           $execution=new Logout();
           $html=$execution->execute();
+          break;
+
+        case 'addseriepref':
+          $execution=new addseriepref();
+          $html=$execution->execute();
+          header('Location: index.php');
+          break;
+
+        case 'suppseriepref':
+          $execution=new suppseriepref();
+          $html=$execution->execute();
+          header('Location: index.php');
           break;
 
         default:

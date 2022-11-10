@@ -48,7 +48,8 @@ class Auth{
       self::checkPasswordStrength($pass, 10);
 
       try{
-        $query="insert into utilisateur values(?,?, null, null, null, null, null, null, null)";
+        $query="insert into utilisateur values(?,?, null, null, null)";
+
         $stmt=$db->prepare($query);
         $res=$stmt->execute([$email, $hash]);
       }
@@ -122,7 +123,27 @@ class Auth{
       $db=ConnectionFactory::makeConnection();
 
       $stmt=$db->prepare($query);
-      $stmt->execute([$_SESSION['email']]);
+      $res=$stmt->execute([$email]);
+      if(!$res) throw new Error('auth error');
+
+      $utilisateur=$stmt->fetch(PDO::FETCH_ASSOC);
+
+      if(!$utilisateur) throw new Exception("auth failed");
+      if(!password_verify($mdp, $utilisateur['passwd']))
+        throw new Exception('Mot de passe incorrect');
+      $_SESSION['utilisateur']=serialize($utilisateur);
+      return $utilisateur['email'];
+    }
+
+    static function checkPasswordStrength(string $pass, int $minimumLength):bool{
+      return strlen($pass)<$minimumLength;
+    }
+
+    static function showProfil(){
+      $query="select * from utilisateur";
+      $db=ConnectionFactory::makeConnection();
+      $stmt=$db->query($query);
+      $stmt->execute();
       $res=$stmt->fetch();
 
       $_SESSION['nom']=$res['nom'];
