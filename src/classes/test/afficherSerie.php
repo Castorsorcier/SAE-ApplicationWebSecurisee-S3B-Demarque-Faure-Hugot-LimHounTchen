@@ -4,7 +4,7 @@ namespace iutnc\deefy\test;
 use iutnc\deefy\factory\ConnectionFactory;
 require_once 'Click.php';
 
-class afficherSerie{
+class AfficherSerie{
 
 static function AfficherSerie($liste):string{
   $bdd=ConnectionFactory::makeConnection();

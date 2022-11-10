@@ -49,13 +49,17 @@ class Dispatcher{
           break;
 
         default:
-          $html ='<h2>Bienvenue</h2>';
-          if(isset($_SESSION['utilisateur'])){
+          $html='<h2>Bienvenue</h2>';
+          if(!is_null($this->action)){
+            $html.=AfficherSerie::afficherSerie($this->action);
+          }
+          else if(isset($_SESSION['utilisateur'])){
             $execution=new Display();
             $html.=$execution->execute();
           }
           break;
       }
+
       echo $this->renderPage($html);
     }
 
@@ -79,8 +83,6 @@ class Dispatcher{
       </nav>Vous êtes connecté : <strong>$email</strong><br>
       end;
 
-      if(!isset($_GET['function']))
-        $options.=AfficherSerie::afficherSerie(1);
     }
 
     return <<<END
